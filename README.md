@@ -2,6 +2,13 @@
 
 This repository contains three files to enable the On-Screen Display (OSD) for the Camera and Mic On/Off key on the Samsung Galaxy Book 3 Pro running Fedora 43 Workstation Edition.
 
+## How it works & Security
+The physical Camera/Mic block key works out of the box at the hardware level. You can verify this by going to **Settings > Audio > Input** and observing the microphone volume indicator. 
+
+However, the system doesn't provide any visual feedback when you press the key. The purpose of this script is simply to show a pop-up notification (OSD) to indicate the current block/unblock status.
+
+**Security Note:** because the key press communicates directly with the hardware, it is not detectable as a standard keyboard input. To trigger the OSD safely, this script listens specifically for the system's "Samsung Galaxy Book Camera Lens Cover" event. This means it does not read or intercept your keyboard inputs, ensuring your system's security remains uncompromised.
+
 ## Files:
 - **99-samsung-privacy.rules**: contains the udev rule that allows the script to read the Samsung camera lens cover events.
 - **samsung-privacy-osd.desktop**: autostarts the script once you log in.
