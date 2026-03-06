@@ -10,11 +10,11 @@ However, the system doesn't provide any visual feedback when you press the key. 
 **Security Note:** because the key press communicates directly with the hardware, it is not detectable as a standard keyboard input. To trigger the OSD safely, this script listens specifically for the system's "Samsung Galaxy Book Camera Lens Cover" event. This means it does not read or intercept your keyboard inputs, ensuring your system's security remains uncompromised.
 
 ## Files:
-- **99-samsung-privacy.rules**: contains the udev rule that allows the script to read the Samsung camera lens cover events.
+- **72-samsung-privacy.rules**: contains the udev rule that allows the script to read the Samsung camera lens cover events. **systemd-logind** handles the uaccess tag to grant the logged-in user permission to read the event, processes its rules in the 70-73 range (udev rules are processed in numerical order). By using 72- instead of a higher number (like 99-), we ensure our rule is applied before systemd-logind finishes its permission assignment. Otherwise, you would get a "Permission denied" error and would be forced to run the script as root.
 - **samsung-privacy-osd.desktop**: autostarts the script once you log in.
 - **camera-mic-osd.sh**: the script that intercepts the event and shows the corresponding pop-up.
 
 ## File locations:
-- **99-samsung-privacy.rules**: place this file in the `/etc/udev/rules.d/` directory.
+- **72-samsung-privacy.rules**: place this file in the `/etc/udev/rules.d/` directory.
 - **samsung-privacy-osd.desktop**: place this file in the `$HOME/.config/autostart/` directory.
-- **camera-mic-osd.sh**: this file can be placed anywhere, but I recommend putting it in the `$HOME/.local/bin/` directory.
+- **camera-mic-osd.sh**: this file can be placed anywhere, but I recommend putting it in the `$HOME/.local/bin/` directory. This file must be executable.
