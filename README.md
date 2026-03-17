@@ -5,7 +5,9 @@ This repository contains three files to enable the On-Screen Display (OSD) for t
 ## How it works & Security
 The physical Camera/Mic block key works out of the box at the hardware level. You can verify this by going to **Settings > Audio > Input** and observing the microphone volume indicator. 
 
-However, the system doesn't provide any visual feedback when you press the key. The purpose of this script is simply to show a pop-up notification (OSD) to indicate the current block/unblock status.
+However, the system doesn't provide any visual feedback when you press the key. The purpose of this script is simply to show a pop-up notification (OSD) to indicate the current block/unblock status. 
+
+**Login**: the block status is reset every time the device is powered on. By default, the microphone and camera are ON at startup. To ensure you are always aware of your privacy settings, this script will display a reminder showing the current status of the camera and microphone every time you log in.
 
 **Security Note:** because the key press communicates directly with the hardware, it is not detectable as a standard keyboard input. To trigger the OSD safely, this script listens specifically for the system's "Samsung Galaxy Book Camera Lens Cover" event. This means it does not read or intercept your keyboard inputs, ensuring your system's security remains uncompromised.
 
