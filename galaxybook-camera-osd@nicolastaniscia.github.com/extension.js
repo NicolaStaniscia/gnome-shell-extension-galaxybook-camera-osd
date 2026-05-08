@@ -7,8 +7,17 @@ import Gio from 'gi://Gio';
 const KERNEL_OBJECT_PATH = '/sys/class/firmware-attributes/samsung-galaxybook/attributes/block_recording/current_value';
 const POLL_INTERVAL_MS = 300;
 
+// Asyncronous sleep function 
+const sleep = (ms) => new Promise(resolve => {
+    GLib.timeout_add(GLib.PRIORITY_DEFAULT, ms, () => {
+        resolve();
+        return GLib.SOURCE_REMOVE; // Stop the timer after it fires once
+    });
+});
+
 export default class CameraMicMonitorExtension extends Extension {
     enable() {
+        this._isEnabled = true;
         this._lastState = null;
         this._timeoutId = null;
 
@@ -25,6 +34,8 @@ export default class CameraMicMonitorExtension extends Extension {
     }
 
     disable() {
+        this._isEnabled = false;
+
         // Clean resources and reset state
         if (this._timeoutId) {
             GLib.Source.remove(this._timeoutId);
@@ -81,11 +92,15 @@ export default class CameraMicMonitorExtension extends Extension {
         Main.osdWindowManager._showOsdWindow(Main.layoutManager.primaryIndex, icon, message, null, null);
     }
 
-    _showInitialState() {
+    async _showInitialState() {
         if (this._lastState === null) {
             console.error('[CameraMicMonitor] Initial state is null');
             return;
         }
+
+        await sleep(5000); // Wait for 5 seconds to ensure the desktop environment is fully loaded and ready to display notifications
+
+        if (this._isEnabled === false) return; // If the extension was disabled during the sleep, do not proceed
 
         // Get current DBus session
         const bus = Gio.DBus.session;
