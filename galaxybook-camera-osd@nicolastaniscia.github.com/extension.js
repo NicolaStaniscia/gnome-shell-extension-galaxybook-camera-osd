@@ -115,7 +115,7 @@ export default class CameraMicMonitorExtension extends Extension {
                 body,                          
                 [],                            
                 {},                            
-                5                              // Timeout (5 seconds)
+                10                              // Timeout (10 seconds)
             ]),
             null,                              // No reply expected
             Gio.DBusCallFlags.NONE,
