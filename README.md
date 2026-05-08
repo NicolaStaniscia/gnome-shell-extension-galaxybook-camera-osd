@@ -1,22 +1,41 @@
-# Samsung Galaxy Book 3 Pro - Camera/Mic On/Off OSD
+# Samsung Galaxy Book Camera/Mic OSD Fix
 
-This repository contains three files to enable the On-Screen Display (OSD) for the Camera and Mic On/Off key on the Samsung Galaxy Book 3 Pro running Fedora 43 Workstation Edition.
+A GNOME Shell extension that restores the missing On-Screen Display (OSD) and system notifications for the hardware camera/microphone privacy switch (`block_recording`) on Samsung Galaxy Book laptops.
 
-## How it works & Security
-The physical Camera/Mic block key works out of the box at the hardware level. You can verify this by going to **Settings > Audio > Input** and observing the microphone volume indicator. 
+When you press the dedicated hardware key to disable or enable the camera and microphone, GNOME natively doesn't show any visual feedback. This extension monitors the kernel module in real-time and triggers the standard GNOME OSD, letting you know exactly when your privacy mode is ON or OFF.
 
-However, the system doesn't provide any visual feedback when you press the key. The purpose of this script is simply to show a pop-up notification (OSD) to indicate the current block/unblock status. 
+## Prerequisites
 
-**Login**: the block status is reset every time the device is powered on. By default, the microphone and camera are ON at startup. To ensure you are always aware of your privacy settings, this script will display a reminder showing the current status of the camera and microphone every time you log in.
+Before installing, make sure your kernel has the `samsung-galaxybook` driver loaded. You can verify this by checking if the following directory exists on your system:
 
-**Security Note:** because the key press communicates directly with the hardware, it is not detectable as a standard keyboard input. To trigger the OSD safely, this script listens specifically for the system's "Samsung Galaxy Book Camera Lens Cover" event. This means it does not read or intercept your keyboard inputs, ensuring your system's security remains uncompromised.
+```bash
+ls /sys/class/firmware-attributes/samsung-galaxybook
+```
 
-## Files:
-- **72-samsung-privacy.rules**: contains the udev rule that allows the script to read the Samsung camera lens cover events. **systemd-logind** handles the uaccess tag to grant the logged-in user permission to read the event, processes its rules in the 70-73 range (udev rules are processed in numerical order). By using 72- instead of a higher number (like 99-), we ensure our rule is applied before systemd-logind finishes its permission assignment. Otherwise, you would get a "Permission denied" error and would be forced to run the script as root.
-- **samsung-privacy-osd.desktop**: autostarts the script once you log in.
-- **camera-mic-osd.sh**: the script that intercepts the event and shows the corresponding pop-up.
+If the directory exists, your system is supported and the extension will work.
 
-## File locations:
-- **72-samsung-privacy.rules**: place this file in the `/etc/udev/rules.d/` directory.
-- **samsung-privacy-osd.desktop**: place this file in the `$HOME/.config/autostart/` directory.
-- **camera-mic-osd.sh**: this file can be placed anywhere, but I recommend putting it in the `$HOME/.local/bin/` directory. This file must be executable.
+## Installation
+
+The user-level extension directory (`~/.local/share/gnome-shell/extensions/`) is the standard path across all Linux distributions using GNOME (Fedora, Ubuntu, Arch Linux, etc.).
+
+### 1. Clone the repository
+Download the files to your local machine:
+```bash
+git clone https://github.com/NicolaStaniscia/gnome-shell-extension-galaxybook-camera-osd.git
+```
+
+### 2. Move the folder
+For GNOME to recognize the extension, the directory name **must** exactly match the extension's UUID.
+```bash
+cp -r galaxybook-camera-osd@nicolastaniscia.github.com ~/.local/share/gnome-shell/extensions/galaxybook-camera-osd@nicolastaniscia.github.com
+```
+
+### 3. Restart your session
+Since modern GNOME uses Wayland by default, you need to restart your session for the new extension files to be detected:
+* Log out of your current user session and log back in.
+
+### 4. Enable the extension
+You can enable the extension using the **Extensions** app (available in your software center), or simply run the following command in your terminal:
+```bash
+gnome-extensions enable galaxybook-camera-osd@nicolastaniscia.github.com
+```

@@ -1,9 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Samsung Privacy OSD
-Comment=Show hardware pop-up of camera and mic
-Exec=bash -c "$HOME/.local/bin/camera-mic-osd.sh"
-Terminal=false
-Hidden=false
-NoDisplay=false
-X-GNOME-Autostart-enabled=true

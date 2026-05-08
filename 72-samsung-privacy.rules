@@ -1,1 +1,0 @@
-SUBSYSTEM=="input", KERNEL=="event*", ATTRS{name}=="Samsung Galaxy Book Camera Lens Cover", ENV{ID_SEAT}="seat0", TAG+="seat", TAG+="uaccess"

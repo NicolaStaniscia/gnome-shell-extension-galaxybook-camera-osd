@@ -1,0 +1,9 @@
+{
+  "name": "Samsung Galaxy Book Camera OSD Fix",
+  "description": "Restores the missing On-Screen Display (OSD) and notifications for the hardware camera/microphone privacy switch (block_recording) on Samsung Galaxy Book laptops.",
+  "uuid": "galaxybook-camera-osd@nicolastaniscia.github.com",
+  "shell-version": [
+    "49"
+  ],
+  "url": "https://github.com/NicolaStaniscia/gnome-shell-extension-galaxybook-camera-osd.git"
+}
